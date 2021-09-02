@@ -1,1 +1,3 @@
-Criando um README.md como teste.
+OnBoarding Leonardo Cassiano
+
+This is a basic project with educacional purposes only.
