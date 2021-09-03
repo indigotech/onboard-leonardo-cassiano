@@ -8,6 +8,7 @@ import {
   View,
   TextInput,
 } from 'react-native';
+import { string } from 'yargs';
 
 const Section: React.FC<{
   title: string;
@@ -39,6 +40,21 @@ const onLogin = async()=>{
 
 };
 
+let handleOnChange = ( email: string ) => {
+
+  let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+  if ( re.test(email) ) {
+      
+  }
+  else {
+      
+  }
+
+
+}
+
+
 const App = () => {
   const [email, onChangeEmail] = React.useState("");
   const [password, onChangePassword] = React.useState("");
@@ -56,6 +72,7 @@ const App = () => {
             style={styles.input}
             onChangeText = {onChangeEmail}
             value = {email}
+            /** onChange = {handleOnChange(email)} **/
           />
           <Text>
             Senha
