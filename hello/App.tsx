@@ -33,9 +33,8 @@ const Section: React.FC<{
     </View>
   );
 };
-
+  
 const onLogin = async()=>{
-
 
 };
 
@@ -89,6 +88,7 @@ const styles = StyleSheet.create({
   highlight: {
     fontWeight: '700',
   },
+
   input: {
     height: 40,
     margin: 12,
