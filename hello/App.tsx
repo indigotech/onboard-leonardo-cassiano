@@ -9,7 +9,7 @@ import {
   TextInput,
   Alert,
 } from 'react-native';
-import { string } from 'yargs';
+
 
 const Section: React.FC<{
   title: string;
@@ -38,16 +38,16 @@ const Section: React.FC<{
 
 const onLogin = (email: string, password: string)=>{
 
-  let reemail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{3,}))$/;
-  let repassword = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,}$/;
+  let validEmailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{3,}))$/;
+  let validPasswordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,}$/;
 
-  if ( reemail.test(email) && repassword.test(password)) {
-    
+  if ( validEmailRegex.test(email) && validPasswordRegex.test(password)) {
+    console.log('TODO')
   }
-  else if(!reemail.test(email) && repassword.test(password)) {
+  else if(!validEmailRegex.test(email) && validPasswordRegex.test(password)) {
     Alert.alert('Email inválido');
   }
-  else if(reemail.test(email) && !repassword.test(password)){
+  else if(validEmailRegex.test(email) && !validPasswordRegex.test(password)){
     Alert.alert('Senha inválida');
   }
   else {
@@ -106,6 +106,7 @@ const styles = StyleSheet.create({
   highlight: {
     fontWeight: '700',
   },
+  
   input: {
     height: 40,
     margin: 12,
