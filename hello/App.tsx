@@ -46,8 +46,7 @@ const App = () => {
   return (
     <SafeAreaView>
         <View>
-          <Section title="Bem-vindo(a) à Taqtile!">
-          </Section>
+          <Section title="Bem-vindo(a) à Taqtile!"/>
           <Text>
             E-mail
           </Text>
