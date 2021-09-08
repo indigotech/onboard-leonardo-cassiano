@@ -57,21 +57,20 @@ const onLogin = (email: string, password: string)=>{
 };
 
 const App = () => {
-  const [email, onChangeEmail] = React.useState("");
-  const [password, onChangePassword] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
 
 
   return (
     <SafeAreaView>
         <View>
-          <Section title="Bem-vindo(a) à Taqtile!">
-          </Section>
+          <Section title="Bem-vindo(a) à Taqtile!"/>
           <Text>
             E-mail
           </Text>
           <TextInput
             style={styles.input}
-            onChangeText = {onChangeEmail}
+            onChangeText = {setEmail}
             value = {email}
           />
           <Text>
@@ -79,12 +78,12 @@ const App = () => {
           </Text>
           <TextInput
             style={styles.input}
-            onChangeText = {onChangePassword}
+            onChangeText = {setPassword}
             value = {password}
           />
           <Button onPress={() => onLogin(email, password)} 
-                  title= "Entrar">
-          </Button>
+                  title= "Entrar"
+          />
         </View>
     </SafeAreaView>
   );
