@@ -6,10 +6,8 @@ import {
   Text,
   useColorScheme,
   View,
-  TextInput,
-  Alert,
 } from 'react-native';
-import { string } from 'yargs';
+
 
 const Section: React.FC<{
   title: string;
@@ -107,6 +105,7 @@ const styles = StyleSheet.create({
   highlight: {
     fontWeight: '700',
   },
+  
   input: {
     height: 40,
     margin: 12,
