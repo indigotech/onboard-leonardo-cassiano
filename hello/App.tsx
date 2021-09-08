@@ -64,8 +64,7 @@ const App = () => {
             onChangeText = {onChangePassword}
             value = {password}
           />
-          <Button onPress={onLogin} title= "Entrar">
-          </Button>
+          <Button onPress={onLogin} title= "Entrar" />
         </View>
     </SafeAreaView>
   );
