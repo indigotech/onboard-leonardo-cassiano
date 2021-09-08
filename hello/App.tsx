@@ -7,6 +7,7 @@ import {
   useColorScheme,
   View,
   TextInput,
+  Alert,
 } from 'react-native';
 import { string } from 'yargs';
 
@@ -35,25 +36,25 @@ const Section: React.FC<{
   );
 };
 
-const onLogin = async()=>{
+const onLogin = (email: string, password: string)=>{
 
+  let reemail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{3,}))$/;
+  let repassword = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,}$/;
 
-};
-
-let handleOnChange = ( email: string ) => {
-
-  let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-  if ( re.test(email) ) {
-      
+  if ( reemail.test(email) && repassword.test(password)) {
+    
+  }
+  else if(!reemail.test(email) && repassword.test(password)) {
+    Alert.alert('Email inválido');
+  }
+  else if(reemail.test(email) && !repassword.test(password)){
+    Alert.alert('Senha inválida');
   }
   else {
-      
+    Alert.alert('Email e Senha inválidos');
   }
 
-
-}
-
+};
 
 const App = () => {
   const [email, onChangeEmail] = React.useState("");
@@ -72,7 +73,6 @@ const App = () => {
             style={styles.input}
             onChangeText = {onChangeEmail}
             value = {email}
-            /** onChange = {handleOnChange(email)} **/
           />
           <Text>
             Senha
@@ -82,7 +82,8 @@ const App = () => {
             onChangeText = {onChangePassword}
             value = {password}
           />
-          <Button onPress={onLogin} title= "Entrar">
+          <Button onPress={() => onLogin(email, password)} 
+                  title= "Entrar">
           </Button>
         </View>
     </SafeAreaView>
