@@ -39,8 +39,8 @@ const onLogin = async()=>{
 };
 
 const App = () => {
-  const [email, onChangeEmail] = React.useState("");
-  const [password, onChangePassword] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
 
 
   return (
@@ -52,7 +52,7 @@ const App = () => {
           </Text>
           <TextInput
             style={styles.input}
-            onChangeText = {onChangeEmail}
+            onChangeText = {setEmail}
             value = {email}
           />
           <Text>
@@ -60,7 +60,7 @@ const App = () => {
           </Text>
           <TextInput
             style={styles.input}
-            onChangeText = {onChangePassword}
+            onChangeText = {setPassword}
             value = {password}
           />
           <Button onPress={onLogin} title= "Entrar" />
