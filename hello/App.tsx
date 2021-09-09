@@ -1,81 +1,86 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
-
 import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import { Button, SafeAreaView, StyleSheet, Text, View, TextInput, Alert } from 'react-native';
+/**import { ApolloClient, InMemoryCache, ApolloProvider, useQuery, gql } from "@apollo/client";
+import { render } from "react-dom";
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const client = new ApolloClient({
+  uri: 'https://48p1r2roz4.sse.codesandbox.io',
+  cache: new InMemoryCache()
+});
+
+function ExchangeRates() {
+  const { loading, error, data } = useQuery(gql`
+    {
+      rates(currency: "USD") {
+        currency
+        rate
+      }
+    }
+  `);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error :(</p>;
+
+  return data.rates.map(({ currency, rate }) => (
+    <div key={currency}>
+      <p>
+        {currency}: {rate}
+      </p>
+    </div>
+  ));
+}**/
 
 const Section: React.FC<{
   title: string;
-}> = ({children, title}) => {
-  const isDarkMode = useColorScheme() === 'dark';
+}> = ({ children, title }) => {
   return (
     <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
+      <Text style={[styles.sectionTitle, {}]}>{title}</Text>
+      <Text style={[styles.sectionDescription, {}]}>{children}</Text>
     </View>
   );
 };
 
-const App = () => {
-  const isDarkMode = useColorScheme() === 'dark';
+const onLogin = (email: string, password: string) => {
+  const validEmailRegex =
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{3,}))$/;
+  const validPasswordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,}$/;
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  if (validEmailRegex.test(email) && validPasswordRegex.test(password)) {
+    console.log('TODO');
+  } else if (!validEmailRegex.test(email) && validPasswordRegex.test(password)) {
+    Alert.alert('Email inválido');
+  } else if (validEmailRegex.test(email) && !validPasswordRegex.test(password)) {
+    Alert.alert('Senha inválida');
+  } else {
+    Alert.alert('Email e Senha inválidos');
+  }
+};
+
+const App = () => {
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Primeiro programa">
-            Hello Wolrd!
-          </Section>
-        </View>
-      
+    <SafeAreaView>
+      <View>
+        <Section title='Bem-vindo(a) à Taqtile!' />
+        <Text>E-mail</Text>
+        <TextInput style={styles.input} onChangeText={setEmail} value={email} />
+        <Text>Senha</Text>
+        <TextInput style={styles.input} onChangeText={setPassword} value={password} />
+        <Button onPress={() => onLogin(email, password)} title='Entrar' />
+      </View>
     </SafeAreaView>
   );
 };
+
+/**render(
+  <ApolloProvider client={client}>
+    <App />
+  </ApolloProvider>,
+  document.getElementById("root")
+);**/
 
 const styles = StyleSheet.create({
   sectionContainer: {
@@ -93,6 +98,20 @@ const styles = StyleSheet.create({
   },
   highlight: {
     fontWeight: '700',
+  },
+
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+  },
+
+  button: {
+    height: 30,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
   },
 });
 
