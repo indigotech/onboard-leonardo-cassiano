@@ -11,6 +11,7 @@ import {
   TextInput,
 } from 'react-native';
 =======
+<<<<<<< HEAD
 =======
 import React, { useState } from 'react';
 >>>>>>> f42e9e70 (Server Integration working)
@@ -18,12 +19,31 @@ import { Button, SafeAreaView, StyleSheet, Text, View, TextInput, Alert } from '
 import { ApolloClient, ApolloProvider, gql, InMemoryCache } from '@apollo/client';
 import { emailvalidator, passwordValidator } from './src/validator';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+=======
+import { Button, SafeAreaView, StyleSheet, Text, View, TextInput, Alert } from 'react-native';
+import { ApolloClient, ApolloProvider, gql, InMemoryCache, useMutation } from '@apollo/client';
+
+const LOGIN = gql`
+  mutation Login($email: String!, $password: String!) {
+    login(data: { email: $email, password: $password }) {
+      token
+      user {
+        id
+        birthDate
+        name
+        role
+      }
+    }
+  }
+`;
+>>>>>>> 9ecc9ca0 (Apollo client working)
 
 const client = new ApolloClient({
   uri: 'https://tq-template-server-sample.herokuapp.com/graphql',
   cache: new InMemoryCache(),
 });
 >>>>>>> d56e2419 (Apollo client working)
+<<<<<<< HEAD
 
 const storeData = async (value: string) => {
   try {
@@ -32,6 +52,8 @@ const storeData = async (value: string) => {
     Alert.alert(e);
   }
 };
+=======
+>>>>>>> 9ecc9ca0 (Apollo client working)
 
 const Section: React.FC<{
   title: string;
@@ -62,6 +84,9 @@ const onLogin = async()=>{
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9ecc9ca0 (Apollo client working)
 =======
 const Title: React.FC<{ title: string }> = () => {
   const [mutate, { loading, data, error }] = useMutation(LOGIN, {
@@ -128,6 +153,7 @@ const App = () => {
     </SafeAreaView>
 =======
     <ApolloProvider client = {client}>
+<<<<<<< HEAD
 =======
 const login = (email: string, password: string) => {
   return client
@@ -181,6 +207,8 @@ const App = () => {
   return (
     <ApolloProvider client={client}>
 >>>>>>> f42e9e70 (Server Integration working)
+=======
+>>>>>>> 9ecc9ca0 (Apollo client working)
       <SafeAreaView>
         <View>
           <Section title='Bem-vindo(a) à Taqtile!' />
@@ -188,7 +216,12 @@ const App = () => {
           <TextInput style={styles.input} onChangeText={setEmail} value={email} />
           <Text>Senha</Text>
           <TextInput style={styles.input} onChangeText={setPassword} value={password} />
+<<<<<<< HEAD
           <Button title='Entrar' onPress={handleSubmit} />
+=======
+          <Button onPress={() => onLogin(email, password)} title='Entrar' />
+          <Title title='Logar' />
+>>>>>>> 9ecc9ca0 (Apollo client working)
         </View>
       </SafeAreaView>
     </ApolloProvider>
