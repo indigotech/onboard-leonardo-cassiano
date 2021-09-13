@@ -13,12 +13,16 @@
     "@apollo/client": "^3.4.11",
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     "@react-native-async-storage/async-storage": "^1.15.7",
 =======
 >>>>>>> 9ecc9ca0 (Apollo client working)
 =======
     "@react-native-async-storage/async-storage": "^1.15.7",
 >>>>>>> 19be70f7 (Server Integration working)
+=======
+    "@react-native-async-storage/async-storage": "^1.15.7",
+>>>>>>> f42e9e70 (Server Integration working)
     "graphql": "^15.5.3",
     "react": "17.0.2",
     "react-native": "0.65.1"
