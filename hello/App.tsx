@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React from 'react';
 <<<<<<< HEAD
 import {
@@ -10,28 +11,27 @@ import {
   TextInput,
 } from 'react-native';
 =======
+=======
+import React, { useState } from 'react';
+>>>>>>> f42e9e70 (Server Integration working)
 import { Button, SafeAreaView, StyleSheet, Text, View, TextInput, Alert } from 'react-native';
-import { ApolloClient, ApolloProvider, gql, InMemoryCache, useMutation } from '@apollo/client';
-
-const LOGIN = gql`
-  mutation Login($email: String!, $password: String!) {
-    login(data: { email: $email, password: $password }) {
-      token
-      user {
-        id
-        birthDate
-        name
-        role
-      }
-    }
-  }
-`;
+import { ApolloClient, ApolloProvider, gql, InMemoryCache } from '@apollo/client';
+import { emailvalidator, passwordValidator } from './src/validator';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const client = new ApolloClient({
   uri: 'https://tq-template-server-sample.herokuapp.com/graphql',
   cache: new InMemoryCache(),
 });
 >>>>>>> d56e2419 (Apollo client working)
+
+const storeData = async (value: string) => {
+  try {
+    await AsyncStorage.setItem('@storage_Key', value);
+  } catch (e) {
+    Alert.alert(e);
+  }
+};
 
 const Section: React.FC<{
   title: string;
@@ -60,6 +60,7 @@ const Section: React.FC<{
   
 const onLogin = async()=>{
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 const Title: React.FC<{ title: string }> = () => {
@@ -127,6 +128,59 @@ const App = () => {
     </SafeAreaView>
 =======
     <ApolloProvider client = {client}>
+=======
+const login = (email: string, password: string) => {
+  return client
+    .mutate({
+      mutation: gql`
+      mutation {
+        login (data:{
+          email: "${email}"
+          password: "${password}"
+        }){
+          token
+        }
+      }
+    `,
+    })
+    .then((result) => {
+      const jsonString = JSON.stringify(result);
+      const data = JSON.parse(jsonString);
+      storeData(data.data.login.token);
+      return result;
+    })
+    .catch((err) => {
+      const errorString = JSON.stringify(err);
+      const error = JSON.parse(errorString);
+      Alert.alert(error.message);
+      return null;
+    });
+};
+
+const App = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async () => {
+    if (!emailvalidator(email)) {
+      Alert.alert('Email Inválido');
+    } else if (!passwordValidator(password)) {
+      Alert.alert('Senha Inválida');
+    } else {
+      setLoading(true);
+      if (await login(email, password)) {
+        console.log('Deu certo');
+      } else {
+        setLoading(false);
+        console.log('Deu ruim');
+      }
+    }
+  };
+
+  return (
+    <ApolloProvider client={client}>
+>>>>>>> f42e9e70 (Server Integration working)
       <SafeAreaView>
         <View>
           <Section title='Bem-vindo(a) à Taqtile!' />
@@ -134,8 +188,7 @@ const App = () => {
           <TextInput style={styles.input} onChangeText={setEmail} value={email} />
           <Text>Senha</Text>
           <TextInput style={styles.input} onChangeText={setPassword} value={password} />
-          <Button onPress={() => onLogin(email, password)} title='Entrar' />
-          <Title title='Logar' />
+          <Button title='Entrar' onPress={handleSubmit} />
         </View>
       </SafeAreaView>
     </ApolloProvider>
