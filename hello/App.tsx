@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Button, SafeAreaView, StyleSheet, Text, View, TextInput, Alert } from 'react-native';
-import { ApolloClient, ApolloProvider, gql, InMemoryCache } from '@apollo/client';
+import { Button, SafeAreaView, StyleSheet, Text, View, TextInput, Alert, ActivityIndicator } from 'react-native';
+import { ApolloClient, gql, InMemoryCache } from '@apollo/client';
 import { emailvalidator, passwordValidator } from './src/validator';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Navigation, NavigationComponentProps } from 'react-native-navigation';
 
 const client = new ApolloClient({
   uri: 'https://tq-template-server-sample.herokuapp.com/graphql',
@@ -56,7 +57,7 @@ const login = (email: string, password: string) => {
     });
 };
 
-const App = () => {
+const App = (props: NavigationComponentProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -70,6 +71,17 @@ const App = () => {
       setLoading(true);
       if (await login(email, password)) {
         console.log('Deu certo');
+        Navigation.push(props.componentId, {
+          component: {
+            name: 'Settings',
+          },
+        })
+          .then(() => {
+            setLoading(false);
+          })
+          .finally(() => {
+            setLoading(false);
+          });
       } else {
         setLoading(false);
         console.log('Deu ruim');
@@ -78,18 +90,35 @@ const App = () => {
   };
 
   return (
-    <ApolloProvider client={client}>
-      <SafeAreaView>
-        <View>
-          <Section title='Bem-vindo(a) à Taqtile!' />
-          <Text>E-mail</Text>
-          <TextInput style={styles.input} onChangeText={setEmail} value={email} />
-          <Text>Senha</Text>
-          <TextInput style={styles.input} onChangeText={setPassword} value={password} />
-          <Button title='Entrar' onPress={handleSubmit} />
-        </View>
-      </SafeAreaView>
-    </ApolloProvider>
+    <SafeAreaView>
+      <View>
+        {loading ? (
+          <View style={styles.loadingIndicator}>
+            <ActivityIndicator size='large' color='#00ff00' />
+          </View>
+        ) : (
+          <>
+            <Section title='Bem-vindo(a) à Taqtile!' />
+            <Text>E-mail</Text>
+            <TextInput style={styles.input} onChangeText={setEmail} value={email} />
+            <Text>Senha</Text>
+            <TextInput style={styles.input} onChangeText={setPassword} value={password} />
+
+            <Button title='Entrar' onPress={handleSubmit} />
+            <Button
+              title='Push teste'
+              onPress={() =>
+                Navigation.push(props.componentId, {
+                  component: {
+                    name: 'Settings',
+                  },
+                })
+              }
+            />
+          </>
+        )}
+      </View>
+    </SafeAreaView>
   );
 };
 
@@ -123,6 +152,16 @@ const styles = StyleSheet.create({
     margin: 12,
     borderWidth: 1,
     padding: 10,
+  },
+
+  loadingIndicator: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 350,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
