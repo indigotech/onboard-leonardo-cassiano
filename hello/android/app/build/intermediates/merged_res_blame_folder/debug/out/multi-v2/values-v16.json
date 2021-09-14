@@ -4,7 +4,7 @@
             "outputFile": "/Users/taqtile/Downloads/onboard/onboard-leonardo-cassiano/hello/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-v16/values-v16.xml",
             "map": [
                 {
-                    "source": "/Users/taqtile/.gradle/caches/transforms-3/384a804ddf61add8f1298a3b8f500b71/transformed/core-1.1.0/res/values-v16/values-v16.xml",
+                    "source": "/Users/taqtile/.gradle/caches/transforms-3/bb358a5be27c9fcd9b26fe5c1fbe63b4/transformed/core-1.3.2/res/values-v16/values-v16.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -14,7 +14,7 @@
                     }
                 },
                 {
-                    "source": "/Users/taqtile/.gradle/caches/transforms-3/2b33f08a78071dc79c67b5b0c82c3366/transformed/appcompat-1.1.0/res/values-v16/values-v16.xml",
+                    "source": "/Users/taqtile/.gradle/caches/transforms-3/099f4a9497869a8b87ab8ae900e23846/transformed/appcompat-1.2.0/res/values-v16/values-v16.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

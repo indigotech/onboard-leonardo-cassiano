@@ -4,7 +4,24 @@
             "outputFile": "/Users/taqtile/Downloads/onboard/onboard-leonardo-cassiano/hello/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-large-v4/values-large-v4.xml",
             "map": [
                 {
-                    "source": "/Users/taqtile/.gradle/caches/transforms-3/2b33f08a78071dc79c67b5b0c82c3366/transformed/appcompat-1.1.0/res/values-large-v4/values-large-v4.xml",
+                    "source": "/Users/taqtile/.gradle/caches/transforms-3/075f39de957fdfddd4151f75a1691c9a/transformed/material-1.2.0-alpha03/res/values-large-v4/values-large-v4.xml",
+                    "from": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,177",
+                        "endColumns": "121,133",
+                        "endOffsets": "172,306"
+                    },
+                    "to": {
+                        "startLines": "11,12",
+                        "startColumns": "4,4",
+                        "startOffsets": "752,874",
+                        "endColumns": "121,133",
+                        "endOffsets": "869,1003"
+                    }
+                },
+                {
+                    "source": "/Users/taqtile/.gradle/caches/transforms-3/099f4a9497869a8b87ab8ae900e23846/transformed/appcompat-1.2.0/res/values-large-v4/values-large-v4.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10",
                         "startColumns": "4,4,4,4,4,4,4,4,4",
