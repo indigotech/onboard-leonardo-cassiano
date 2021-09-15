@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, SafeAreaView, StyleSheet, Text, View, TextInput, Alert, ActivityIndicator } from 'react-native';
-import { ApolloClient, ApolloProvider, gql, InMemoryCache } from '@apollo/client';
+import { ApolloClient, gql, InMemoryCache } from '@apollo/client';
 import { emailvalidator, passwordValidator } from './src/validator';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Navigation, NavigationComponentProps } from 'react-native-navigation';
