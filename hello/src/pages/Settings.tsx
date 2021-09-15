@@ -1,26 +1,64 @@
-import { createConfigItem } from '@babel/core';
-import React from 'react';
-import { SafeAreaView, Text, View, FlatList, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { SafeAreaView, Text, View, FlatList, StyleSheet, Alert } from 'react-native';
+import { ApolloClient, gql, InMemoryCache, createHttpLink } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const DATA = [
-  {
-    username: 'tester1',
-    useremail: 'tester1@taqtile.com.br',
-    id: '1',
-  },
-  {
-    username: 'tester2',
-    useremail: 'tester2@taqtile.com.br',
-    id: '2',
-  },
-  {
-    username: 'tester3',
-    useremail: 'tester3@taqtile.com.br',
-    id: '3',
-  },
-];
+const httpLink = createHttpLink({
+  uri: 'https://tq-template-server-sample.herokuapp.com/graphql',
+});
 
-const Item: React.FC<{
+const authLink = setContext(async (_, { headers }) => {
+  const token = await AsyncStorage.getItem(`@storage_Key`);
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `${token}` : ``,
+    },
+  };
+});
+
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache(),
+  uri: 'https://tq-template-server-sample.herokuapp.com/graphql',
+});
+
+const queryList = async (offset: number, limit: number): Promise<JSON> => {
+  try {
+    const result = await client.query({
+      query: gql`
+      query {
+        users (pageInfo:{
+          offset: ${offset}
+          limit: ${limit}
+        }){
+          nodes {
+            id
+            name
+            email
+          }
+        }
+      }
+    `,
+      /**})
+      .then((result) => {
+        const jsonString = JSON.stringify(result);
+        const data = JSON.parse(jsonString);
+        console.log(data.data.users.nodes);
+        return result;**/
+    });
+    const jsonString = JSON.stringify(result);
+    const data = JSON.parse(jsonString);
+    return data.data.users.nodes;
+  } catch (error) {
+    console.log(JSON.stringify(error, null, 2));
+    Alert.alert(error.message);
+    return error;
+  }
+};
+
+const ItemComponent: React.FC<{
   name: string;
   email: string;
 }> = ({ name, email }) => {
@@ -32,13 +70,41 @@ const Item: React.FC<{
   );
 };
 
+interface Info {
+  name: string;
+  email: string;
+  id: string;
+}
+
+interface Item {
+  item: Info;
+}
+
 const Settings = () => {
-  const renderItem = ({item}) => <Item name= {item.username} email={item.useremail}/>;
+  const [loading, setLoading] = useState(false);
+  const [list, setList] = useState([]);
+  const limit = 20;
+  const offset = 0;
+  const renderItem = ({ item }: Item) => <ItemComponent name={item.name} email={item.email} />;
+
+  async function fetchList() {
+    const nodes = await queryList(offset, limit);
+    setList(list.concat(nodes));
+  }
+
+  useEffect(() => {
+    if (!loading) {
+      setLoading(true);
+      fetchList().finally(() => {
+        setLoading(false);
+      });
+    }
+  }, [offset]);
 
   return (
     <SafeAreaView>
       <View>
-        <FlatList data={DATA} keyExtractor={(item) => item.id} renderItem={renderItem} />
+        <FlatList data={list} keyExtractor={(item) => item.id} renderItem={renderItem} />
       </View>
     </SafeAreaView>
   );
