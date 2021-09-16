@@ -4,7 +4,6 @@ import { ApolloClient, gql, InMemoryCache, createHttpLink } from '@apollo/client
 import { setContext } from '@apollo/client/link/context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Navigation, NavigationComponentProps } from 'react-native-navigation';
-
 import { FloatingButton, ButtonSign } from '../styles';
 
 const httpLink = createHttpLink({

@@ -21,7 +21,6 @@ export const dateFormatValidator = (date: string) => {
 };
 
 export const dateValidator = (date: string) => {
-  let error;
   const today = new Date();
   const year = today.getFullYear();
   const day = today.getDate();
