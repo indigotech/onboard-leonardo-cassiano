@@ -9,3 +9,34 @@ export const passwordValidator = (password: string) => {
 
   return validPasswordRegex.test(password)
 };
+
+export const dateFormatValidator = (date: string) => {
+  const validDateRegex = /^\d{4}[-]\d{2}[-]\d{2}/;
+
+  if (validDateRegex.test(date)) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+export const dateValidator = (date: string) => {
+  let error;
+  const today = new Date();
+  const year = today.getFullYear();
+  const day = today.getDate();
+  const month = today.getMonth() + 1;
+  const birthDate = date.split('-');
+  const birthYear = parseInt(birthDate[0]);
+  const birthMonth = parseInt(birthDate[1]);
+  const birthDay = parseInt(birthDate[2]);
+
+  switch (true) {
+    case birthYear > year || birthMonth > 12 || birthDay > 31:
+      return false;
+    case birthYear === year && (birthMonth > month ||  (birthMonth === month && birthDay > day)):
+      return false;
+    default:
+      return true;
+  }
+};
