@@ -7,5 +7,5 @@ export const emailvalidator = (email: string) => {
 export const passwordValidator = (password: string) => {
   const validPasswordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,}$/;
 
-  result validPasswordRegex.test(password)
+  return validPasswordRegex.test(password)
 };
