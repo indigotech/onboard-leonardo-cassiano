@@ -1,23 +1,19 @@
 export const emailvalidator = (email: string) => {
   const validEmailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
-  return validEmailRegex.test(email)
+  return validEmailRegex.test(email);
 };
 
 export const passwordValidator = (password: string) => {
   const validPasswordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,}$/;
 
-  return validPasswordRegex.test(password)
+  return validPasswordRegex.test(password);
 };
 
 export const dateFormatValidator = (date: string) => {
   const validDateRegex = /^\d{4}[-]\d{2}[-]\d{2}/;
 
-  if (validDateRegex.test(date)) {
-    return true;
-  } else {
-    return false;
-  }
+  return validDateRegex.test(date);
 };
 
 export const dateValidator = (date: string) => {
@@ -33,7 +29,7 @@ export const dateValidator = (date: string) => {
   switch (true) {
     case birthYear > year || birthMonth > 12 || birthDay > 31:
       return false;
-    case birthYear === year && (birthMonth > month ||  (birthMonth === month && birthDay > day)):
+    case birthYear === year && (birthMonth > month || (birthMonth === month && birthDay > day)):
       return false;
     default:
       return true;
