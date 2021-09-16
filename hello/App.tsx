@@ -72,6 +72,11 @@ const App = () => {
       if (await login(email, password)) {
         console.log('Deu certo');
         setLoading(false);
+        Navigation.push(props.componentId, {
+          component: {
+            name: 'Settings',
+          },
+        })
       } else {
         setLoading(false);
         console.log('Deu ruim');
