@@ -41,12 +41,6 @@ const queryList = async (offset: number, limit: number): Promise<JSON> => {
         }
       }
     `,
-      /**})
-      .then((result) => {
-        const jsonString = JSON.stringify(result);
-        const data = JSON.parse(jsonString);
-        console.log(data.data.users.nodes);
-        return result;**/
     });
     const jsonString = JSON.stringify(result);
     const data = JSON.parse(jsonString);
