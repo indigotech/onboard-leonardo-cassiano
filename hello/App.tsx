@@ -1,17 +1,14 @@
 import React, { useState } from 'react';
-import { Button, SafeAreaView, StyleSheet, Text, View, TextInput, Alert } from 'react-native';
+import { Button, SafeAreaView, StyleSheet, Text, View, TextInput, Alert, ActivityIndicator } from 'react-native';
 import { ApolloClient, ApolloProvider, gql, InMemoryCache } from '@apollo/client';
 import { emailvalidator, passwordValidator } from './src/validator';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import { Navigation, NavigationComponentProps } from 'react-native-navigation';
-
 
 const client = new ApolloClient({
   uri: 'https://tq-template-server-sample.herokuapp.com/graphql',
   cache: new InMemoryCache(),
 });
-
 
 const storeData = async (value: string) => {
   try {
@@ -23,7 +20,7 @@ const storeData = async (value: string) => {
 
 const Section: React.FC<{
   title: string;
-}> = ({children, title}) => {
+}> = ({ children, title }) => {
   return (
     <View style={styles.sectionContainer}>
       <Text style={[styles.sectionTitle, {}]}>{title}</Text>
@@ -31,7 +28,6 @@ const Section: React.FC<{
     </View>
   );
 };
-
 
 const login = (email: string, password: string) => {
   return client
@@ -48,12 +44,14 @@ const login = (email: string, password: string) => {
     `,
     })
     .then((result) => {
-      const data = JSON.stringify(result);
+      const jsonString = JSON.stringify(result);
+      const data = JSON.parse(jsonString);
       storeData(data.data.login.token);
       return result;
     })
-    .catch((err) => {
-      const data = JSON.stringify(err);
+    .catch((error) => {
+      const jsonString = JSON.stringify(error);
+      const data = JSON.parse(jsonString);
       Alert.alert(error.message);
       return null;
     });
@@ -82,8 +80,6 @@ const App = () => {
   };
 
   return (
-
-
     <SafeAreaView>
       <View>
         {loading ? (
@@ -135,6 +131,16 @@ const styles = StyleSheet.create({
     margin: 12,
     borderWidth: 1,
     padding: 10,
+  },
+
+  loadingIndicator: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 350,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
