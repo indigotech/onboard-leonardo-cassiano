@@ -48,14 +48,12 @@ const login = (email: string, password: string) => {
     `,
     })
     .then((result) => {
-      const jsonString = JSON.stringify(result);
-      const data = JSON.parse(jsonString);
+      const data = JSON.stringify(result);
       storeData(data.data.login.token);
       return result;
     })
     .catch((err) => {
-      const errorString = JSON.stringify(err);
-      const error = JSON.parse(errorString);
+      const data = JSON.stringify(err);
       Alert.alert(error.message);
       return null;
     });
@@ -75,6 +73,7 @@ const App = () => {
       setLoading(true);
       if (await login(email, password)) {
         console.log('Deu certo');
+        setLoading(false);
       } else {
         setLoading(false);
         console.log('Deu ruim');
