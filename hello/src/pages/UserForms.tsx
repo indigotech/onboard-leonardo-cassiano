@@ -4,6 +4,7 @@ import { emailvalidator, dateValidator, dateFormatValidator } from '../validator
 import { Navigation, NavigationComponentProps, NavigationFunctionComponent } from 'react-native-navigation';
 import { Props } from 'react-native-navigation/lib/dist/adapters/TouchablePreview';
 import { addUser } from '../addUser';
+import { styles } from '../styles';
 
 export const UserForms: NavigationFunctionComponent<Props> = (props: NavigationComponentProps) => {
   const [name, setName] = useState('');
@@ -52,14 +53,5 @@ export const UserForms: NavigationFunctionComponent<Props> = (props: NavigationC
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-  },
-});
 
 export default UserForms;

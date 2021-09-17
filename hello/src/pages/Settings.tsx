@@ -1,30 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, Text, View, FlatList, StyleSheet, Alert } from 'react-native';
-import { ApolloClient, gql, InMemoryCache, createHttpLink } from '@apollo/client';
-import { setContext } from '@apollo/client/link/context';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SafeAreaView, Text, View, FlatList, Alert, TouchableOpacity } from 'react-native';
+import { gql } from '@apollo/client';
 import { Navigation, NavigationComponentProps } from 'react-native-navigation';
-import { FloatingButton, ButtonSign } from '../styles';
-
-const httpLink = createHttpLink({
-  uri: 'https://tq-template-server-sample.herokuapp.com/graphql',
-});
-
-const authLink = setContext(async (_, { headers }) => {
-  const token = await AsyncStorage.getItem(`@storage_Key`);
-  return {
-    headers: {
-      ...headers,
-      authorization: token ? `${token}` : ``,
-    },
-  };
-});
-
-const client = new ApolloClient({
-  link: authLink.concat(httpLink),
-  cache: new InMemoryCache(),
-  uri: 'https://tq-template-server-sample.herokuapp.com/graphql',
-});
+import { FloatingButton, ButtonSign, styles } from '../styles';
+import { client } from '../client';
 
 const queryList = async (offset: number, limit: number): Promise<JSON> => {
   try {
@@ -48,7 +27,6 @@ const queryList = async (offset: number, limit: number): Promise<JSON> => {
     const data = JSON.parse(jsonString);
     return data.data.users.nodes;
   } catch (error) {
-    console.log(JSON.stringify(error, null, 2));
     Alert.alert(error.message);
     return error;
   }
@@ -81,12 +59,34 @@ const Settings = (props: NavigationComponentProps) => {
   const [list, setList] = useState([]);
   const limit = 20;
   const offset = 0;
-  const renderItem = ({ item }: Item) => <ItemComponent name={item.name} email={item.email} />;
+
+  const renderItem = ({ item }: Item) => {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          openDetails({ item });
+        }}
+      >
+        <ItemComponent name={item.name} email={item.email} />
+      </TouchableOpacity>
+    );
+  };
 
   const handlePress = () => {
     Navigation.push(props.componentId, {
       component: {
         name: 'UserForms',
+      },
+    });
+  };
+
+  const openDetails = ({ item }: Item) => {
+    Navigation.push(props.componentId, {
+      component: {
+        name: 'Details',
+        passProps: {
+          id: item.id,
+        },
       },
     });
   };
@@ -108,7 +108,13 @@ const Settings = (props: NavigationComponentProps) => {
   return (
     <SafeAreaView>
       <View>
-        <FlatList data={list} keyExtractor={(item) => item.id} renderItem={renderItem} />
+        <FlatList
+          data={list}
+          keyExtractor={(item) => item.id}
+          renderItem={renderItem}
+          contentContainerStyle={{ flexGrow: 1 }}
+          onEndReachedThreshold={0.2}
+        />
         <FloatingButton onPress={handlePress}>
           <ButtonSign> + </ButtonSign>
         </FloatingButton>
@@ -116,24 +122,5 @@ const Settings = (props: NavigationComponentProps) => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  item: {
-    backgroundColor: '#A7AED3',
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-  },
-
-  buttonStyle: {
-    position: 'absolute',
-    width: 50,
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    right: 30,
-    bottom: 30,
-  },
-});
 
 export default Settings;

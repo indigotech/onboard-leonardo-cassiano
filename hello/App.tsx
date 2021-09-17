@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Button, SafeAreaView, StyleSheet, Text, View, TextInput, Alert, ActivityIndicator } from 'react-native';
+import { Button, SafeAreaView, Text, View, TextInput, Alert, ActivityIndicator } from 'react-native';
 import { ApolloClient, gql, InMemoryCache } from '@apollo/client';
 import { emailvalidator, passwordValidator } from './src/validator';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Navigation, NavigationComponentProps } from 'react-native-navigation';
+import { styles } from './src/styles';
 
 const client = new ApolloClient({
   uri: 'https://tq-template-server-sample.herokuapp.com/graphql',
@@ -103,48 +104,5 @@ const App = (props: NavigationComponentProps) => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-  },
-
-  button: {
-    height: 30,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-  },
-
-  loadingIndicator: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 350,
-    bottom: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default App;
