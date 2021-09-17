@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, SafeAreaView, StyleSheet, Text, View, TextInput, Alert, ActivityIndicator } from 'react-native';
-import { ApolloClient, gql, InMemoryCache } from '@apollo/client';
+import { ApolloClient, ApolloProvider, gql, InMemoryCache } from '@apollo/client';
 import { emailvalidator, passwordValidator } from './src/validator';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Navigation, NavigationComponentProps } from 'react-native-navigation';
@@ -57,7 +57,7 @@ const login = (email: string, password: string) => {
     });
 };
 
-const App = (props: NavigationComponentProps) => {
+const App = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -72,11 +72,6 @@ const App = (props: NavigationComponentProps) => {
       if (await login(email, password)) {
         console.log('Deu certo');
         setLoading(false);
-        Navigation.push(props.componentId, {
-          component: {
-            name: 'Settings',
-          },
-        })
       } else {
         setLoading(false);
         console.log('Deu ruim');
