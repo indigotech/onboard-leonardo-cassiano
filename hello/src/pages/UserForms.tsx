@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, TextInput, Button, Alert } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import { SafeAreaView, StyleSheet, Text, View, TextInput, Button, Alert, Picker } from 'react-native';
 import { emailvalidator, dateValidator, dateFormatValidator } from '../validator';
 import { Navigation, NavigationComponentProps, NavigationFunctionComponent } from 'react-native-navigation';
 import { Props } from 'react-native-navigation/lib/dist/adapters/TouchablePreview';
