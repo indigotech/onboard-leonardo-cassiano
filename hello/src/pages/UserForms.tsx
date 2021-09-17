@@ -1,42 +1,51 @@
 import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, View, TextInput, Button, Alert } from 'react-native';
 import { emailvalidator, dateValidator, dateFormatValidator } from '../validator';
-import { gql, useMutation, InMemoryCache, ApolloClient } from '@apollo/client';
+import { gql, InMemoryCache, ApolloClient, createHttpLink } from '@apollo/client';
 import { Navigation, NavigationComponentProps, NavigationFunctionComponent } from 'react-native-navigation';
 import { Props } from 'react-native-navigation/lib/dist/adapters/TouchablePreview';
+import { setContext } from '@apollo/client/link/context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const CREATE_USER = gql`
-  mutation ($name: String!, $email: String!, $phone: String!, $birthDate: Date!) {
-    createUser(data: { name: $name, email: $email, phone: $phone, birthDate: $birthDate, role: user }) {
-      id
-      name
-    }
-  }
-`;
+
+const httpLink = createHttpLink({
+  uri: 'https://tq-template-server-sample.herokuapp.com/graphql',
+});
+
+const authLink = setContext(async (_, { headers }) => {
+  const token = await AsyncStorage.getItem(`@storage_Key`);
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `${token}` : ``,
+    },
+  };
+});
 
 const client = new ApolloClient({
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
   uri: 'https://tq-template-server-sample.herokuapp.com/graphql',
 });
 
-const addUser = (name: string, email: string, phone: string, birthDate: string) => {
+const addUser = (name: string, email: string, phone: string, birthDate: string, role: string) => {
   return client
     .mutate({
       mutation: gql`
-        mutation {
-          createUser(data:{
-            name: "${name}"
-            email: "${email}"
-            phone: "${phone}"
-            birthDate: "${birthDate}"
-          })
+      mutation{
+        createUser(data: {name: "${name}", email: "${email}", phone: "${phone}", birthDate: "${birthDate}", role: ${role}}){
+          id
+          name
+          phone
+          birthDate
+          email
+          role
         }
+      }
+      
       `,
     })
     .then((result) => {
-      const jsonString = JSON.stringify(result);
-      const data = JSON.parse(jsonString);
-      console.log(data.data.login.token);
       return result;
     })
     .catch((err) => {
@@ -46,11 +55,6 @@ const addUser = (name: string, email: string, phone: string, birthDate: string) 
       return null;
     });
 };
-
-interface User {
-  id: string;
-  name: string;
-}
 
 export const UserForms: NavigationFunctionComponent<Props> = (props: NavigationComponentProps) => {
   const [name, setName] = useState('');
@@ -68,17 +72,11 @@ export const UserForms: NavigationFunctionComponent<Props> = (props: NavigationC
     } else if (!dateValidator(birthDate)) {
       Alert.alert('A data de nascimento é inválida');
     } else {
-      console.log('Só para testar mesmo');
       setLoading(true);
-      if (await addUser(name, email, phone, birthDate)) {
+      if (await addUser(name, email, phone, birthDate, role)) {
         console.log('Deu certo');
+        setLoading(false);
         Navigation.pop(props.componentId)
-          .then(() => {
-            setLoading(false);
-          })
-          .finally(() => {
-            setLoading(false);
-          });
       } else {
         setLoading(false);
         console.log('Deu ruim');
