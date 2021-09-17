@@ -1,67 +1,17 @@
 import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, View, TextInput, Button, Alert } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import { emailvalidator, dateValidator, dateFormatValidator } from '../validator';
-import { gql, InMemoryCache, ApolloClient, createHttpLink } from '@apollo/client';
 import { Navigation, NavigationComponentProps, NavigationFunctionComponent } from 'react-native-navigation';
 import { Props } from 'react-native-navigation/lib/dist/adapters/TouchablePreview';
-import { setContext } from '@apollo/client/link/context';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-
-const httpLink = createHttpLink({
-  uri: 'https://tq-template-server-sample.herokuapp.com/graphql',
-});
-
-const authLink = setContext(async (_, { headers }) => {
-  const token = await AsyncStorage.getItem(`@storage_Key`);
-  return {
-    headers: {
-      ...headers,
-      authorization: token ? `${token}` : ``,
-    },
-  };
-});
-
-const client = new ApolloClient({
-  link: authLink.concat(httpLink),
-  cache: new InMemoryCache(),
-  uri: 'https://tq-template-server-sample.herokuapp.com/graphql',
-});
-
-const addUser = (name: string, email: string, phone: string, birthDate: string, role: string) => {
-  return client
-    .mutate({
-      mutation: gql`
-      mutation{
-        createUser(data: {name: "${name}", email: "${email}", phone: "${phone}", birthDate: "${birthDate}", role: ${role}}){
-          id
-          name
-          phone
-          birthDate
-          email
-          role
-        }
-      }
-      
-      `,
-    })
-    .then((result) => {
-      return result;
-    })
-    .catch((err) => {
-      const errorString = JSON.stringify(err);
-      const error = JSON.parse(errorString);
-      Alert.alert(error.message);
-      return null;
-    });
-};
+import { addUser } from '../addUser';
 
 export const UserForms: NavigationFunctionComponent<Props> = (props: NavigationComponentProps) => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [birthDate, setBirthDate] = useState('');
   const [email, setEmail] = useState('');
-  const [role, setRole] = useState('');
+  const [role, setRole] = useState('user');
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
@@ -74,12 +24,10 @@ export const UserForms: NavigationFunctionComponent<Props> = (props: NavigationC
     } else {
       setLoading(true);
       if (await addUser(name, email, phone, birthDate, role)) {
-        console.log('Deu certo');
         setLoading(false);
-        Navigation.pop(props.componentId)
+        Navigation.pop(props.componentId);
       } else {
         setLoading(false);
-        console.log('Deu ruim');
       }
     }
   };
@@ -96,7 +44,10 @@ export const UserForms: NavigationFunctionComponent<Props> = (props: NavigationC
         <Text>E-mail</Text>
         <TextInput style={styles.input} onChangeText={setEmail} value={email} />
         <Text>Cargo</Text>
-        <TextInput style={styles.input} onChangeText={setRole} value={role} />
+        <Picker selectedValue={role} style={styles.input} onValueChange={(itemValue) => setRole(itemValue)}>
+          <Picker.Item label='User' value='user' />
+          <Picker.Item label='Admin' value='admin' />
+        </Picker>
         <Button title='Adicionar novo usuário' onPress={handleSubmit} />
       </View>
     </SafeAreaView>

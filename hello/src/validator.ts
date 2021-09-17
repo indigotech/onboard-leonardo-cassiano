@@ -22,16 +22,13 @@ export const dateValidator = (date: string) => {
   const day = today.getDate();
   const month = today.getMonth() + 1;
   const birthDate = date.split('-');
-  const birthYear = parseInt(birthDate[0]);
-  const birthMonth = parseInt(birthDate[1]);
-  const birthDay = parseInt(birthDate[2]);
+  const birthYear = +birthDate[0];
+  const birthMonth = +birthDate[1];
+  const birthDay = +birthDate[2];
+  const isMonthOrDayInvalid = birthMonth > 12 || birthDay > 31;
+  const isFutureYear = birthYear > year;
+  const isSameYearButFutureDate =
+    birthYear === year && (birthMonth > month || (birthMonth === month && birthDay > day));
 
-  switch (true) {
-    case birthYear > year || birthMonth > 12 || birthDay > 31:
-      return false;
-    case birthYear === year && (birthMonth > month || (birthMonth === month && birthDay > day)):
-      return false;
-    default:
-      return true;
-  }
+  return !isMonthOrDayInvalid && !isFutureYear && !isSameYearButFutureDate;
 };
