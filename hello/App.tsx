@@ -57,7 +57,7 @@ const login = (email: string, password: string) => {
     });
 };
 
-const App = () => {
+const App = (props: NavigationComponentProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
