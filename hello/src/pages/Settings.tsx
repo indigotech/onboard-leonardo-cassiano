@@ -46,7 +46,6 @@ const queryList = async (offset: number, limit: number): Promise<JSON> => {
     const data = JSON.parse(jsonString);
     return data.data.users.nodes;
   } catch (error) {
-    console.log(JSON.stringify(error, null, 2));
     Alert.alert(error.message);
     return error;
   }
