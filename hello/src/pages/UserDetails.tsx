@@ -69,9 +69,8 @@ const UserDetails = (props) => {
   useEffect(() => {
     if (!loading) {
       setLoading(true);
-      fetchList().finally(() => {
-        setLoading(false);
-      });
+      fetchList();
+      setLoading(false);
     }
   });
 

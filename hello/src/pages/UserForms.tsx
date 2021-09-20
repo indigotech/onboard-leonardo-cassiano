@@ -5,6 +5,16 @@ import { Navigation, NavigationComponentProps, NavigationFunctionComponent } fro
 import { Props } from 'react-native-navigation/lib/dist/adapters/TouchablePreview';
 import { addUser } from '../addUser';
 import { styles } from '../styles';
+import { gql } from '@apollo/client';
+
+const CREATE_USER = gql`
+  mutation ($name: String!, $email: String!, $phone: String!, $birthDate: Date!) {
+    createUser(data: { name: $name, email: $email, phone: $phone, birthDate: $birthDate, role: user }) {
+      id
+      name
+    }
+  }
+`;
 
 export const UserForms: NavigationFunctionComponent<Props> = (props: NavigationComponentProps) => {
   const [name, setName] = useState('');
@@ -54,4 +64,10 @@ export const UserForms: NavigationFunctionComponent<Props> = (props: NavigationC
   );
 };
 
-export default UserForms;
+UserForms.options = {
+  topBar: {
+    title: {
+      text: 'Adicionar usuário',
+    },
+  },
+};

@@ -1,5 +1,5 @@
 import { Alert } from 'react-native';
-import { gql  } from '@apollo/client';
+import { gql } from '@apollo/client';
 import { client } from './client';
 
 export const addUser = (name: string, email: string, phone: string, birthDate: string, role: string) => {
