@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, Text, View, Alert } from 'react-native';
+import { SafeAreaView, View, Alert } from 'react-native';
 import { gql } from '@apollo/client';
-import { styles } from '../styles';
+import { StyledDetailsName, StyledDetails, StyledItem } from '../styles';
 import { client } from '../client';
 
 const queryUser = async (id: string): Promise<JSON> => {
@@ -37,13 +37,13 @@ const UserComponent: React.FC<{
   role: string;
 }> = ({ name, email, phone, birthDate, role }) => {
   return (
-    <View style={styles.item}>
-      <Text>{name}</Text>
-      <Text>{phone}</Text>
-      <Text>{birthDate}</Text>
-      <Text>{email}</Text>
-      <Text>{role}</Text>
-    </View>
+    <StyledItem>
+      <StyledDetailsName>{name}</StyledDetailsName>
+      <StyledDetails>{phone}</StyledDetails>
+      <StyledDetails>{birthDate}</StyledDetails>
+      <StyledDetails>{email}</StyledDetails>
+      <StyledDetails>{role}</StyledDetails>
+    </StyledItem>
   );
 };
 
