@@ -50,7 +50,6 @@ const login = (email: string, password: string) => {
       return result;
     })
     .catch((error) => {
-      const jsonString = JSON.stringify(error);
       Alert.alert(error.message);
       return null;
     });
