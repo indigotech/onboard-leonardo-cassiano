@@ -54,7 +54,7 @@ interface Item {
   item: Info;
 }
 
-const Settings = (props: NavigationComponentProps) => {
+const UsersList = (props: NavigationComponentProps) => {
   const [loading, setLoading] = useState(false);
   const [list, setList] = useState([]);
   const limit = 20;
@@ -123,4 +123,12 @@ const Settings = (props: NavigationComponentProps) => {
   );
 };
 
-export default Settings;
+UsersList.options = {
+  topBar: {
+    title: {
+      text: 'Lista de usuários',
+    },
+  },
+};
+
+export default UsersList;

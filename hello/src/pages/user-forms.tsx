@@ -3,7 +3,7 @@ import { SafeAreaView, Text, View, TextInput, Button, Alert, Picker } from 'reac
 import { emailvalidator, dateValidator, dateFormatValidator } from '../validator';
 import { Navigation, NavigationComponentProps, NavigationFunctionComponent } from 'react-native-navigation';
 import { Props } from 'react-native-navigation/lib/dist/adapters/TouchablePreview';
-import { addUser } from '../addUser';
+import { addUser } from '../add-user';
 import { styles } from '../styles';
 import { gql, useMutation } from '@apollo/client';
 
