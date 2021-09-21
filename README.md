@@ -1,15 +1,15 @@
-#OnBoarding - Leonardo Cassiano#
+# OnBoarding - Leonardo Cassiano
 
-##Project's Description##
+## Project's Description
 
 This is a basic project with educacional purposes only, developed to learn more about GitHub and TypeScript.
 
-##Enviroment and Tools##
+## Enviroment and Tools
 
 The project is been developed in a MacOS machine, Android studio is been used to emulate the aplication in a virtual device for android systems and Xcode version 12.4 to emulate in Ios systems.
 The programming languages used in the project are Javascript, react-native, typescript.
 
-##Steps to run and debug##
+## Steps to run and debug
 
 To run the project it is necessary to open the project with android studio or Xcode, after that, it is possible to use your own device or a emulated virtual device, that must be inicialized before running the aplication in a terminal. 
 
