@@ -1,17 +1,47 @@
 import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, TextInput, Button, Alert, Picker } from 'react-native';
+import { SafeAreaView, Text, View, TextInput, Button, Alert, Picker } from 'react-native';
 import { emailvalidator, dateValidator, dateFormatValidator } from '../validator';
 import { Navigation, NavigationComponentProps, NavigationFunctionComponent } from 'react-native-navigation';
-import { Props } from 'react-native-navigation/lib/dist/adapters/TouchablePreview';
-import { addUser } from '../addUser';
+import { styles } from '../styles';
+import { ApolloProvider, gql, useMutation } from '@apollo/client';
+import { client } from '../client';
 
-export const UserForms: NavigationFunctionComponent<Props> = (props: NavigationComponentProps) => {
+interface User {
+  id: string;
+  name: string;
+}
+
+const CREATE_USER = gql`
+  mutation ($name: String!, $email: String!, $phone: String!, $birthDate: Date!, $role: UserRole!) {
+    createUser(data: { name: $name, email: $email, phone: $phone, birthDate: $birthDate, role: $role }) {
+      id
+      name
+    }
+  }
+`;
+
+export const UserFormsProvider: NavigationFunctionComponent = (props) => (
+  <ApolloProvider client={client}>
+    <UserForms {...props} />
+  </ApolloProvider>
+);
+
+export const UserForms: NavigationFunctionComponent = (props: NavigationComponentProps) => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [birthDate, setBirthDate] = useState('');
   const [email, setEmail] = useState('');
   const [role, setRole] = useState('user');
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [createUser, {loading}] = useMutation<{createUser: User}>(CREATE_USER, {
+    onError(error){
+      Alert.alert(error.message);
+    },
+    onCompleted(){
+      Alert.alert('Usuário cadastrado com sucesso');
+      Navigation.pop(props.componentId);
+    },
+  });
 
   const handleSubmit = async () => {
     if (!emailvalidator(email)) {
@@ -21,13 +51,9 @@ export const UserForms: NavigationFunctionComponent<Props> = (props: NavigationC
     } else if (!dateValidator(birthDate)) {
       Alert.alert('A data de nascimento é inválida');
     } else {
-      setLoading(true);
-      if (await addUser(name, email, phone, birthDate, role)) {
-        setLoading(false);
-        Navigation.pop(props.componentId);
-      } else {
-        setLoading(false);
-      }
+      setIsLoading(true);
+      await createUser({variables : {name, email, phone, birthDate, role}});
+      setIsLoading(false);
     }
   };
 
@@ -53,13 +79,10 @@ export const UserForms: NavigationFunctionComponent<Props> = (props: NavigationC
   );
 };
 
-const styles = StyleSheet.create({
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
+UserForms.options = {
+  topBar: {
+    title: {
+      text: 'Adicionar usuário',
+    },
   },
-});
-
-export default UserForms;
+};
