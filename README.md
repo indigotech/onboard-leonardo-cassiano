@@ -13,7 +13,7 @@ The programming languages used in the project are Javascript, react-native, type
 
 To run the project it is necessary to open the project with android studio or Xcode, after that, it is possible to use your own device or a emulated virtual device, that must be inicialized before running the aplication in a terminal. 
 
-To do so, open a terminal inside the project and run the following commando:
+To do so, open a terminal inside the project and run the following command:
 
 npx react-native start
 
