@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 import { SafeAreaView, View, Alert, ActivityIndicator } from 'react-native';
-import { ApolloClient, gql, InMemoryCache } from '@apollo/client';
+import { gql } from '@apollo/client';
 import { emailvalidator, passwordValidator } from './src/validator';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Navigation, NavigationComponentProps } from 'react-native-navigation';
-import { StyledContainer, StyledTitle, StyledDescription, StyledInput, StyledText, StyledButton, StyledLoadingIndicator } from './src/styles';
-
-const client = new ApolloClient({
-  uri: 'https://tq-template-server-sample.herokuapp.com/graphql',
-  cache: new InMemoryCache(),
-});
+import { client } from './src/client';
+import {
+  StyledContainer,
+  StyledTitle,
+  StyledDescription,
+  StyledInput,
+  StyledText,
+  StyledButton,
+  StyledLoadingIndicator,
+} from './src/styles';
 
 const storeData = async (value: string) => {
   try {
