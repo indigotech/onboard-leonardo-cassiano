@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import { SafeAreaView, Text, View, TextInput, Button, Alert, Picker } from 'react-native';
 import { emailvalidator, dateValidator, dateFormatValidator } from '../validator';
 import { Navigation, NavigationComponentProps, NavigationFunctionComponent } from 'react-native-navigation';
-import { Props } from 'react-native-navigation/lib/dist/adapters/TouchablePreview';
-import { addUser } from '../add-user';
 import { styles } from '../styles';
-import { gql, useMutation } from '@apollo/client';
+import { ApolloProvider, gql, useMutation } from '@apollo/client';
+import { client } from '../client';
 
 interface User {
   id: string;
@@ -13,15 +12,21 @@ interface User {
 }
 
 const CREATE_USER = gql`
-  mutation ($name: String!, $email: String!, $phone: String!, $birthDate: Date!) {
-    createUser(data: { name: $name, email: $email, phone: $phone, birthDate: $birthDate, role: user }) {
+  mutation ($name: String!, $email: String!, $phone: String!, $birthDate: Date!, $role: UserRole!) {
+    createUser(data: { name: $name, email: $email, phone: $phone, birthDate: $birthDate, role: $role }) {
       id
       name
     }
   }
 `;
 
-export const UserForms: NavigationFunctionComponent<Props> = (props: NavigationComponentProps) => {
+export const UserFormsProvider: NavigationFunctionComponent = (props) => (
+  <ApolloProvider client={client}>
+    <UserForms {...props} />
+  </ApolloProvider>
+);
+
+export const UserForms: NavigationFunctionComponent = (props: NavigationComponentProps) => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [birthDate, setBirthDate] = useState('');
@@ -33,7 +38,7 @@ export const UserForms: NavigationFunctionComponent<Props> = (props: NavigationC
       Alert.alert(error.message);
     },
     onCompleted(){
-      Alert.alert('Deu certo');
+      Alert.alert('Usuário cadastrado com sucesso');
       Navigation.pop(props.componentId);
     },
   });
@@ -47,12 +52,8 @@ export const UserForms: NavigationFunctionComponent<Props> = (props: NavigationC
       Alert.alert('A data de nascimento é inválida');
     } else {
       setIsLoading(true);
-      if (await addUser(name, email, phone, birthDate, role)) {
-        setIsLoading(false);
-        Navigation.pop(props.componentId);
-      } else {
-        setIsLoading(false);
-      }
+      await createUser({variables : {name, email, phone, birthDate, role}});
+      setIsLoading(false);
     }
   };
 
