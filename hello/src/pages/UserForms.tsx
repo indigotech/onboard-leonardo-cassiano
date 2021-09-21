@@ -5,7 +5,12 @@ import { Navigation, NavigationComponentProps, NavigationFunctionComponent } fro
 import { Props } from 'react-native-navigation/lib/dist/adapters/TouchablePreview';
 import { addUser } from '../addUser';
 import { styles } from '../styles';
-import { gql } from '@apollo/client';
+import { gql, useMutation } from '@apollo/client';
+
+interface User {
+  id: string;
+  name: string;
+}
 
 const CREATE_USER = gql`
   mutation ($name: String!, $email: String!, $phone: String!, $birthDate: Date!) {
@@ -22,7 +27,16 @@ export const UserForms: NavigationFunctionComponent<Props> = (props: NavigationC
   const [birthDate, setBirthDate] = useState('');
   const [email, setEmail] = useState('');
   const [role, setRole] = useState('user');
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [createUser, {loading}] = useMutation<{createUser: User}>(CREATE_USER, {
+    onError(error){
+      Alert.alert(error.message);
+    },
+    onCompleted(){
+      Alert.alert('Deu certo');
+      Navigation.pop(props.componentId);
+    },
+  });
 
   const handleSubmit = async () => {
     if (!emailvalidator(email)) {
@@ -32,12 +46,12 @@ export const UserForms: NavigationFunctionComponent<Props> = (props: NavigationC
     } else if (!dateValidator(birthDate)) {
       Alert.alert('A data de nascimento é inválida');
     } else {
-      setLoading(true);
+      setIsLoading(true);
       if (await addUser(name, email, phone, birthDate, role)) {
-        setLoading(false);
+        setIsLoading(false);
         Navigation.pop(props.componentId);
       } else {
-        setLoading(false);
+        setIsLoading(false);
       }
     }
   };
