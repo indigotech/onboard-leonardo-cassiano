@@ -26,7 +26,7 @@ export const UserFormsProvider: NavigationFunctionComponent = (props) => (
   </ApolloProvider>
 );
 
-export const UserForms: NavigationFunctionComponent = (props: NavigationComponentProps) => {
+const UserForms: NavigationFunctionComponent = (props: NavigationComponentProps) => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [birthDate, setBirthDate] = useState('');

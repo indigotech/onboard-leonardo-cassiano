@@ -83,4 +83,12 @@ const UserDetails = (props) => {
   );
 };
 
+UserDetails.options = {
+  topBar: {
+    title: {
+      text: 'Detalhes do usuário',
+    },
+  },
+};
+
 export default UserDetails;
