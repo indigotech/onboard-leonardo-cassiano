@@ -5,15 +5,8 @@ import { emailvalidator, passwordValidator } from './src/validator';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Navigation, NavigationComponentProps } from 'react-native-navigation';
 import { client } from './src/client';
-import {
-  StyledContainer,
-  StyledTitle,
-  StyledDescription,
-  StyledInput,
-  StyledText,
-  StyledButton,
-  StyledLoadingIndicator,
-} from './src/styles';
+import { InputSection } from './src/components/input-section';
+import { StyledContainer, StyledTitle, StyledDescription, StyledButton, StyledLoadingIndicator } from './src/styles';
 
 const storeData = async (value: string) => {
   try {
@@ -95,10 +88,8 @@ const App = (props: NavigationComponentProps) => {
         ) : (
           <>
             <Section title='Bem-vindo(a) à Taqtile!' />
-            <StyledText>E-mail</StyledText>
-            <StyledInput onChangeText={setEmail} value={email} />
-            <StyledText>Senha</StyledText>
-            <StyledInput onChangeText={setPassword} value={password} />
+            <InputSection label='Email' input={email} onChange={setEmail}></InputSection>
+            <InputSection label='Senha' input={password} onChange={setPassword}></InputSection>
             <StyledButton title='Entrar' onPress={handleSubmit} />
           </>
         )}

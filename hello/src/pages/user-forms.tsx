@@ -4,7 +4,8 @@ import { emailvalidator, dateValidator, dateFormatValidator } from '../validator
 import { Navigation, NavigationComponentProps, NavigationFunctionComponent } from 'react-native-navigation';
 import { ApolloProvider, gql, useMutation } from '@apollo/client';
 import { client } from '../client';
-import { StyledButton, StyledText, StyledInput, StyledPicker } from '../styles';
+import { StyledButton, StyledText, StyledPicker } from '../styles';
+import { InputSection } from '../components/input-section';
 
 interface User {
   id: string;
@@ -60,14 +61,10 @@ const UserForms: NavigationFunctionComponent = (props: NavigationComponentProps)
   return (
     <SafeAreaView>
       <View>
-        <StyledText>Nome</StyledText>
-        <StyledInput onChangeText={setName} value={name} />
-        <StyledText>Telefone</StyledText>
-        <StyledInput onChangeText={setPhone} value={phone} />
-        <StyledText>Data de nascimento</StyledText>
-        <StyledInput onChangeText={setBirthDate} value={birthDate} />
-        <StyledText>E-mail</StyledText>
-        <StyledInput onChangeText={setEmail} value={email} />
+        <InputSection label='Nome' input={name} onChange={setName}></InputSection>
+        <InputSection label='Telefone' input={phone} onChange={setPhone}></InputSection>
+        <InputSection label='Data de nascimento' input={birthDate} onChange={setBirthDate}></InputSection>
+        <InputSection label='Email' input={email} onChange={setEmail}></InputSection>
         <StyledText>Cargo</StyledText>
         <StyledPicker selectedValue={role} onValueChange={(itemValue) => setRole(itemValue)}>
           <Picker.Item label='User' value='user' />
