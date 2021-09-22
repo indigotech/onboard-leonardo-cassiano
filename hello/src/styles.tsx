@@ -43,6 +43,12 @@ export const StyledInput = styled.TextInput`
   border-width: 1px;
 `;
 
+export const StyledErrorInput = styled.TextInput`
+  margin: 12px;
+  border-width: 1px;
+  background-color: #F00E0E8E;
+`;
+
 export const StyledText = styled.Text`
   color: gray;
   font-size: 14px;
@@ -100,4 +106,11 @@ export const StyledLoadingIndicator = styled.View`
   bottom: 0px;
   align-items: center;
   justify-content: center;
+`;
+
+export const StyledErrorText = styled.Text`
+  color: red;
+  font-size: 12px;
+  font-weight: normal;
+  margin-bottom: 12px;
 `;

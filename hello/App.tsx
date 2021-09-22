@@ -57,14 +57,28 @@ const App = (props: NavigationComponentProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
 
   const handleSubmit = async () => {
-    if (!emailvalidator(email)) {
-      Alert.alert('Email Inválido');
-    } else if (!passwordValidator(password)) {
-      Alert.alert('Senha Inválida');
+    if (!emailvalidator(email) || !passwordValidator(password)) {
+      if (!emailvalidator(email) && !passwordValidator(password)) {
+        Alert.alert('Email e senha inválidos');
+        setEmailError(true);
+        setPasswordError(true);
+      } else if (!passwordValidator(password)) {
+        Alert.alert('Senha Inválida');
+        setEmailError(false);
+        setPasswordError(true);
+      } else {
+        Alert.alert('Email Inválido');
+        setEmailError(true);
+        setPasswordError(false);
+      }
     } else {
       setLoading(true);
+      setEmailError(false);
+      setPasswordError(false);
       if (await login(email, password)) {
         setLoading(false);
         Navigation.push(props.componentId, {
@@ -88,8 +102,8 @@ const App = (props: NavigationComponentProps) => {
         ) : (
           <>
             <Section title='Bem-vindo(a) à Taqtile!' />
-            <InputSection label='Email' input={email} onChange={setEmail}></InputSection>
-            <InputSection label='Senha' input={password} onChange={setPassword}></InputSection>
+            <InputSection label='Email' input={email} onChange={setEmail} onError={emailError}></InputSection>
+            <InputSection label='Senha' input={password} onChange={setPassword} onError={passwordError}></InputSection>
             <StyledButton title='Entrar' onPress={handleSubmit} />
           </>
         )}
