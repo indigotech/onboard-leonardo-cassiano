@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, Text, View, FlatList, Alert, TouchableOpacity } from 'react-native';
+import { SafeAreaView, View, FlatList, Alert, TouchableOpacity } from 'react-native';
 import { gql } from '@apollo/client';
 import { Navigation, NavigationComponentProps } from 'react-native-navigation';
-import { FloatingButton, ButtonSign, styles } from '../styles';
+import { FloatingButton, ButtonSign, StyledName, StyledEmail, StyledItem } from '../styles';
 import { client } from '../client';
 
 const queryList = async (offset: number, limit: number): Promise<JSON> => {
@@ -37,10 +37,10 @@ const ItemComponent: React.FC<{
   email: string;
 }> = ({ name, email }) => {
   return (
-    <View style={styles.item}>
-      <Text>{name}</Text>
-      <Text>{email}</Text>
-    </View>
+    <StyledItem>
+      <StyledName>{name}</StyledName>
+      <StyledEmail>{email}</StyledEmail>
+    </StyledItem>
   );
 };
 

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { SafeAreaView, Text, View, TextInput, Button, Alert, Picker } from 'react-native';
+import { SafeAreaView, View, Alert, Picker } from 'react-native';
 import { emailvalidator, dateValidator, dateFormatValidator } from '../validator';
 import { Navigation, NavigationComponentProps, NavigationFunctionComponent } from 'react-native-navigation';
-import { styles } from '../styles';
 import { ApolloProvider, gql, useMutation } from '@apollo/client';
 import { client } from '../client';
+import { StyledButton, StyledText, StyledPicker } from '../styles';
+import { InputSection } from '../components/input-section';
 
 interface User {
   id: string;
@@ -26,18 +27,18 @@ export const UserFormsProvider: NavigationFunctionComponent = (props) => (
   </ApolloProvider>
 );
 
-export const UserForms: NavigationFunctionComponent = (props: NavigationComponentProps) => {
+const UserForms: NavigationFunctionComponent = (props: NavigationComponentProps) => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [birthDate, setBirthDate] = useState('');
   const [email, setEmail] = useState('');
   const [role, setRole] = useState('user');
   const [isLoading, setIsLoading] = useState(false);
-  const [createUser, {loading}] = useMutation<{createUser: User}>(CREATE_USER, {
-    onError(error){
+  const [createUser, { loading }] = useMutation<{ createUser: User }>(CREATE_USER, {
+    onError(error) {
       Alert.alert(error.message);
     },
-    onCompleted(){
+    onCompleted() {
       Alert.alert('Usuário cadastrado com sucesso');
       Navigation.pop(props.componentId);
     },
@@ -52,7 +53,7 @@ export const UserForms: NavigationFunctionComponent = (props: NavigationComponen
       Alert.alert('A data de nascimento é inválida');
     } else {
       setIsLoading(true);
-      await createUser({variables : {name, email, phone, birthDate, role}});
+      await createUser({ variables: { name, email, phone, birthDate, role } });
       setIsLoading(false);
     }
   };
@@ -60,20 +61,16 @@ export const UserForms: NavigationFunctionComponent = (props: NavigationComponen
   return (
     <SafeAreaView>
       <View>
-        <Text>Nome</Text>
-        <TextInput style={styles.input} onChangeText={setName} value={name} />
-        <Text>Telefone</Text>
-        <TextInput style={styles.input} onChangeText={setPhone} value={phone} />
-        <Text>Data de nascimento</Text>
-        <TextInput style={styles.input} onChangeText={setBirthDate} value={birthDate} />
-        <Text>E-mail</Text>
-        <TextInput style={styles.input} onChangeText={setEmail} value={email} />
-        <Text>Cargo</Text>
-        <Picker selectedValue={role} style={styles.input} onValueChange={(itemValue) => setRole(itemValue)}>
+        <InputSection label='Nome' input={name} onChange={setName}></InputSection>
+        <InputSection label='Telefone' input={phone} onChange={setPhone}></InputSection>
+        <InputSection label='Data de nascimento' input={birthDate} onChange={setBirthDate}></InputSection>
+        <InputSection label='Email' input={email} onChange={setEmail}></InputSection>
+        <StyledText>Cargo</StyledText>
+        <StyledPicker selectedValue={role} onValueChange={(itemValue) => setRole(itemValue)}>
           <Picker.Item label='User' value='user' />
           <Picker.Item label='Admin' value='admin' />
-        </Picker>
-        <Button title='Adicionar novo usuário' onPress={handleSubmit} />
+        </StyledPicker>
+        <StyledButton title='Adicionar novo usuário' onPress={handleSubmit} />
       </View>
     </SafeAreaView>
   );
